@@ -1,10 +1,10 @@
 package com.example.AppForElite.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,8 +28,9 @@ public class BankDetails
 	@Column(name = "ifsc_code")
 	private String ifsc;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "elite_id", referencedColumnName = "id")
+	@OneToOne()
+	@JoinColumn(name = "elite_id")
+	@JsonBackReference
 	private Elite elite;
 
 	public Long getId()
@@ -81,6 +82,4 @@ public class BankDetails
 	{
 		this.elite = elite;
 	}
-
-
 }

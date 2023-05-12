@@ -1,9 +1,11 @@
 package com.example.AppForElite.service.serviceimpl;
 
+import com.example.AppForElite.entity.BankDetails;
 import com.example.AppForElite.entity.Cities;
 import com.example.AppForElite.entity.Course;
 import com.example.AppForElite.entity.Elite;
 import com.example.AppForElite.entity.State;
+import com.example.AppForElite.respository.BankDetailsRepository;
 import com.example.AppForElite.respository.CityRepository;
 import com.example.AppForElite.respository.CourseRepository;
 import com.example.AppForElite.respository.EliteRepository;
@@ -11,6 +13,7 @@ import com.example.AppForElite.respository.StateRepository;
 import com.example.AppForElite.service.EliteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,6 +28,9 @@ public class EliteServiceImpl implements EliteService
 	private StateRepository stateRepository;
 	@Autowired
 	private CityRepository cityRepository;
+
+	@Autowired
+	private BankDetailsRepository bankDetailsRepository;
 
 	@Override
 	public void createForm(Elite elite)
@@ -89,5 +95,15 @@ public class EliteServiceImpl implements EliteService
 	public List<Cities> getAllCities(Long id)
 	{
 		return cityRepository.findByStateId(id);
+	}
+
+	@Transactional
+	public Elite createFormWithBankDetails(Elite elite)
+	{
+		BankDetails bankDetails = elite.getBankDetails();
+		bankDetails.setElite(elite);
+		bankDetails = bankDetailsRepository.save(bankDetails);
+		elite.setBankDetails(bankDetails);
+		return eliteRepository.save(elite);
 	}
 }

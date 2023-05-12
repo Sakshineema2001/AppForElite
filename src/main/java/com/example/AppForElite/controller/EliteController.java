@@ -1,5 +1,6 @@
 package com.example.AppForElite.controller;
 
+import com.example.AppForElite.entity.BankDetails;
 import com.example.AppForElite.entity.Cities;
 import com.example.AppForElite.entity.Course;
 import com.example.AppForElite.entity.Elite;
@@ -73,6 +74,11 @@ public class EliteController
 	@GetMapping("/cities/{id}")
 	public List<Cities> getAllCities(@PathVariable Long id){
 		return eliteService.getAllCities(id);
+	}
+
+	@PostMapping("/create")
+	public Elite createUser(@RequestBody Elite elite) {
+		return eliteService.createFormWithBankDetails(elite);
 	}
 
 }

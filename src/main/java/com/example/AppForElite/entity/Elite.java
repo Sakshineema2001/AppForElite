@@ -1,5 +1,7 @@
 package com.example.AppForElite.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,7 +50,8 @@ public class Elite
 	@Column(name = "date")
 	private Date date;
 
-	@OneToOne(mappedBy = "elite", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "elite", cascade = CascadeType.MERGE)
+	@JsonManagedReference
 	private BankDetails bankDetails;
 
 	public BankDetails getBankDetails()
@@ -163,4 +166,5 @@ public class Elite
 	{
 		this.city = city;
 	}
+
 }
