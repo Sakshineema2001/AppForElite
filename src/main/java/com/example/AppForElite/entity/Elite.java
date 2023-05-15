@@ -50,7 +50,7 @@ public class Elite
 	@Column(name = "date")
 	private Date date;
 
-	@OneToOne(mappedBy = "elite", cascade = CascadeType.MERGE)
+	@OneToOne(mappedBy = "elite", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private BankDetails bankDetails;
 
