@@ -4,6 +4,7 @@ import com.example.AppForElite.entity.BankDetails;
 import com.example.AppForElite.entity.Cities;
 import com.example.AppForElite.entity.Course;
 import com.example.AppForElite.entity.Elite;
+import com.example.AppForElite.entity.FamilyInfo;
 import com.example.AppForElite.entity.State;
 import com.example.AppForElite.service.EliteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,4 +82,21 @@ public class EliteController
 		return eliteService.createFormWithBankDetails(elite);
 	}
 
+	@PostMapping("/{eliteId}/family-info")
+	public ResponseEntity<List<FamilyInfo>> create(@PathVariable Long eliteId,@RequestBody List<FamilyInfo> familyInfo){
+		eliteService.createFamilyInfoForm(eliteId,familyInfo);
+		return ResponseEntity.ok(familyInfo);
+	}
+
+	@PutMapping("/{eliteId}/family-info/update")
+	public ResponseEntity<List<FamilyInfo>> update(@PathVariable Long eliteId,@RequestBody List<FamilyInfo> familyInfo){
+		eliteService.updateFamilyInfoForm(eliteId,familyInfo);
+		return ResponseEntity.ok(familyInfo);
+	}
+
+	@GetMapping("/{eliteId}/family-info/get")
+	public ResponseEntity<List<FamilyInfo>> getAllFamilyInfoById(@PathVariable Long eliteId){
+		List<FamilyInfo> familyInfoList = eliteService.getFamilyInfoByEliteId(eliteId);
+		return ResponseEntity.ok(familyInfoList);
+	}
 }

@@ -11,9 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "elite")
@@ -53,6 +55,9 @@ public class Elite
 	@OneToOne(mappedBy = "elite", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private BankDetails bankDetails;
+
+	@OneToMany(mappedBy = "elite", cascade = CascadeType.ALL)
+	private List<FamilyInfo> familyInfoList;
 
 	public BankDetails getBankDetails()
 	{
