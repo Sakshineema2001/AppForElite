@@ -76,6 +76,7 @@ public class EliteServiceImpl implements EliteService
 		elite1.setCity(elite.getCity());
 		elite1.setDescription(elite.getDescription());
 		elite1.setPaymentMode(elite.getPaymentMode());
+		elite1.setBankDetails(elite.getBankDetails());
 		return eliteRepository.save(elite1);
 	}
 
@@ -126,35 +127,37 @@ public class EliteServiceImpl implements EliteService
 		}
 		return savedFamilyInfoList;
 	}
-
 	@Override
-	public void updateFamilyInfoForm(Long eliteId, List<FamilyInfo> updatedFamilyInfoList)
-	{
+	public void updateFamilyInfoForm(Long eliteId, List<FamilyInfo> updatedFamilyInfoList) {
 		List<FamilyInfo> existingFamilyInfoList = familyInfoRepository.findByEliteId(eliteId);
 		Map<Long, FamilyInfo> updatedFamilyInfoMap = new HashMap<>();
 
-		for (FamilyInfo updatedFamilyInfo : updatedFamilyInfoList)
-		{
-			if(updatedFamilyInfo.getId() == null){
+		for (FamilyInfo updatedFamilyInfo : updatedFamilyInfoList) {
+			if (updatedFamilyInfo.getId() == null) {
 				Elite elite = eliteRepository.findEliteById(eliteId);
 				updatedFamilyInfo.setElite(elite);
 				updatedFamilyInfo = familyInfoRepository.save(updatedFamilyInfo);
 			}
 			updatedFamilyInfoMap.put(updatedFamilyInfo.getId(), updatedFamilyInfo);
 		}
-		for (FamilyInfo existingFamilyInfo : existingFamilyInfoList)
-		{
+
+		for (FamilyInfo existingFamilyInfo : existingFamilyInfoList) {
 			FamilyInfo updatedFamilyInfo = updatedFamilyInfoMap.get(existingFamilyInfo.getId());
-			if (updatedFamilyInfo != null)
-			{
+			if (updatedFamilyInfo != null) {
 				existingFamilyInfo.setFather(updatedFamilyInfo.getFather());
 				existingFamilyInfo.setMother(updatedFamilyInfo.getMother());
 				existingFamilyInfo.setSiblingsNo(updatedFamilyInfo.getSiblingsNo());
 				existingFamilyInfo.setFatherOccupation(updatedFamilyInfo.getFatherOccupation());
 				familyInfoRepository.save(existingFamilyInfo);
+			} else {
+				// Remove existing family info not present in the updated list
+				familyInfoRepository.delete(existingFamilyInfo);
 			}
 		}
 	}
+
+
+
 	@Override
 	public List<FamilyInfo> getFamilyInfoByEliteId(Long eliteId)
 	{
